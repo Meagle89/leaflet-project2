@@ -37,6 +37,6 @@
   }
 }
 
-.leaflet-contianer {
-  height: 100vh;
+body, html, #root, .leaflet-container {
+  height: 100%;
 }
