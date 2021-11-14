@@ -1,18 +1,14 @@
-import { point } from 'leaflet';
-import { LayerGroup, MapContainer, TileLayer } from 'react-leaflet';
-import { useUserLocate } from '../customHooks';
-import Markers from '../Markers';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import UserMarker from '../Markers';
+import { SelectCountry } from '../SelectCountry';
 
-const zoom: number = 10;
+const zoom: number = 3;
 
 const LeafletMap: React.FC = () => {
-  const {userPosition } = useUserLocate();
   return (
-    <MapContainer center={ userPosition } zoom={ zoom } scrollWheelZoom={true} >
-      <Markers />
-      <LayerGroup>
-        {point}
-      </LayerGroup>
+    <MapContainer center={[0, 0]} zoom={ zoom } scrollWheelZoom={true} whenCreated={(map) => { map.locate()}}>
+      <UserMarker />
+      <SelectCountry />
       <TileLayer
       attribution='&copy; OpenStreetMap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       url="https://tileserver.memomaps.de/tilegen/{z}/{x}/{y}.png" />

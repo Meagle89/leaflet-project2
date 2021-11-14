@@ -1,33 +1,31 @@
-import { Popup } from "react-leaflet";
-import { Marker, useMapEvents } from "react-leaflet";
+import { Marker, useMapEvents, Popup } from "react-leaflet";
 import { useUserLocate } from "../customHooks"
 
-const Markers = () => {
+const UserMarker = () => {
   const {userPosition, setUserPosition} = useUserLocate();
 
   const map = useMapEvents({
-    load(e) {
-      map.locate();
-    },
-    locationfound(e) {
-      const {lat, lng} = e.latlng;
+    locationfound: (location) => {
+      const {lat, lng} = location.latlng;
+      map.flyTo(location.latlng, 13);
       setUserPosition([lat, lng]);
-      map.flyTo(e.latlng, map.getZoom());
-    }
+    },
+    locationerror: (e) => {
+      console.log("location not found");
+    },
   });
 
-  return(
+  return (
     userPosition ? 
       <Marker
       key={userPosition[0]}
       position={userPosition}
-      interactive={false}
       >
         <Popup>
-        A pretty CSS3 popup. <br /> Easily customizable.
+          You are here.
         </Popup> 
       </Marker> : null
   )
 }
 
-export default Markers;
+export default UserMarker;
